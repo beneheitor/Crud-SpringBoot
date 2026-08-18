@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: sentry
+
+server:
+  port: 8081
