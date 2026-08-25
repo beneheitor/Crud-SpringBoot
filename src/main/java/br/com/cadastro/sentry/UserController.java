@@ -52,7 +52,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public Users updateUser(@PathVariable UUID id, @RequestBody Users user) {
         Users existingUser = findOneUser(id);
-        existingUser.setNome(user.getNome());
+        existingUser.setName(user.getName());
         existingUser.setCpf(user.getCpf());
         existingUser.setEmail(user.getEmail());
 
