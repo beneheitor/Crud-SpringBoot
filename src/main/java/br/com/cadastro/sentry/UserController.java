@@ -34,7 +34,7 @@ public class UserController {
     @GetMapping("/{id}")
     public Users findOneUser(@PathVariable UUID id) {
         Optional<Users> findedUser = userRepository.findById(id);
-        if (findedUser.isPresent()){
+        if (findedUser.isPresent()) {
             return findedUser.get();
         } else {
             throw new RuntimeException("Usuário não encontrado!");
@@ -45,27 +45,33 @@ public class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Users addUser(@RequestBody Users user) {
-       return userRepository.save(user);
+        return userRepository.save(user);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Users updateUser(@PathVariable UUID id, @RequestBody Users user) {
         Optional<Users> userSaved = userRepository.findById(id);
-        if (userSaved.isPresent()){
+        if (userSaved.isPresent()) {
             Users userUpdated = userSaved.get();
             userUpdated.setNome(user.getNome());
             userUpdated.setCpf(user.getCpf());
             userUpdated.setEmail(user.getEmail());
             return userRepository.save(userUpdated);
-        } else{
+        } else {
             throw new RuntimeException("Usuário não encontrado com o ID: " + id);
         }
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable int id) {
-        registeredUsers.remove(id);
+    public void deleteUser(@PathVariable UUID id) {
+        Optional<Users> usersOptional = userRepository.findById(id);
+        if (usersOptional.isPresent()){
+            Users userDeleted = usersOptional.get();
+            userRepository.delete(userDeleted);
+        } else {
+            throw new RuntimeException("Usuário não encontrado com o ID: " + id);
+        }
     }
 }
