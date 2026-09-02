@@ -32,6 +32,13 @@ public class Users {
     private UUID id;
 
     @NotEmpty
+    @NotBlank(message = "Senha é obrigatório!")
+    @Size(min = 2, max = 8, message = "Senha deve ter entre 2 e 8 caracteres")
+    @Column(name = "senha", nullable = false, length = 8)
+    private String senha;
+
+
+    @NotEmpty
     @NotBlank(message = "Nome é obrigatório!")
     @Size(min = 2, max = 150, message = "Nome deve ter entre 2 e 150 caracteres")
     @Column(name = "name", nullable = false, length = 150)

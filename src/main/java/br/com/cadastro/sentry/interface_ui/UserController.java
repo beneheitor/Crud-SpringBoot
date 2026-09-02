@@ -1,5 +1,6 @@
 package br.com.cadastro.sentry.interface_ui;
 
+import br.com.cadastro.sentry.application.dto.UsersRequestDTO;
 import br.com.cadastro.sentry.application.service.UsersService;
 import br.com.cadastro.sentry.domain.entity.Users;
 import jakarta.validation.Valid;
@@ -36,14 +37,14 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Users addUser(@Valid @RequestBody Users user) {
-        return usersService.addUser(user);
+    public Users addUser(@Valid @RequestBody UsersRequestDTO usersRequestDTO) {
+        return usersService.addUser(usersRequestDTO);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Users updateUser(@PathVariable UUID id, @RequestBody Users user) {
-       return usersService.updateUser(user, id);
+    public Users updateUser(@PathVariable UUID id, @RequestBody UsersRequestDTO usersRequestDTO) {
+       return usersService.updateUser(usersRequestDTO, id);
     }
 
     @DeleteMapping("/{id}")

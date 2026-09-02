@@ -1,5 +1,7 @@
 package br.com.cadastro.sentry.application.service;
 
+import br.com.cadastro.sentry.application.dto.UsersRequestDTO;
+import br.com.cadastro.sentry.application.dto.UsersResponseDTO;
 import br.com.cadastro.sentry.domain.entity.Users;
 import br.com.cadastro.sentry.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,16 +31,17 @@ public class UsersService {
         }
     }
 
-    public Users addUser(Users user){
-        return userRepository.save(user);
+    public Users addUser(UsersRequestDTO usersRequestDTO){
+        return userRepository.save(usersRequestDTO.toEntity());
     }
 
 
-    public Users updateUser(Users user, UUID id) {
+    public Users updateUser(UsersRequestDTO usersRequestDTO, UUID id) {
         Users existingUser = findOneUser(id);
-        existingUser.setName(user.getName());
-        existingUser.setCpf(user.getCpf());
-        existingUser.setEmail(user.getEmail());
+        existingUser.setName(usersRequestDTO.name());
+        existingUser.setCpf(usersRequestDTO.cpf());
+        existingUser.setEmail(usersRequestDTO.email());
+        existingUser.setSenha(usersRequestDTO.senha());
 
         return userRepository.save(existingUser);
     }
