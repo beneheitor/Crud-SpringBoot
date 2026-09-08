@@ -1,6 +1,7 @@
 package br.com.cadastro.sentry.interface_ui;
 
 import br.com.cadastro.sentry.application.dto.UsersRequestDTO;
+import br.com.cadastro.sentry.application.dto.UsersResponseDTO;
 import br.com.cadastro.sentry.application.service.UsersService;
 import br.com.cadastro.sentry.domain.entity.Users;
 import jakarta.validation.Valid;
@@ -24,20 +25,20 @@ public class UserController {
     //GET PARA RETORNAR TODOS OS USUÁRIOS
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Users> findAllUsers() {
+    public List<UsersResponseDTO> findAllUsers() {
         return usersService.findAll();
     }
 
     //GET PARA RETORNAR APENAS UM USUÁRIO
     @GetMapping("/{id}")
-    public Users findOneUser(@PathVariable UUID id) {
+    public UsersResponseDTO findOneUser(@PathVariable UUID id) {
        return usersService.findOneUser(id);
     }
 
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Users addUser(@Valid @RequestBody UsersRequestDTO usersRequestDTO) {
+    public UsersResponseDTO addUser(@Valid @RequestBody UsersRequestDTO usersRequestDTO) {
         return usersService.addUser(usersRequestDTO);
     }
 

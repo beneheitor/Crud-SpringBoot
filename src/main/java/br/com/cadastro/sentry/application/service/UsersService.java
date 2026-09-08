@@ -18,21 +18,26 @@ public class UsersService {
 
     private final UserRepository userRepository;
 
-    public List<Users> findAll() {
-        return userRepository.findAll();
+    public List<UsersResponseDTO> findAll() {
+//        userRepository.findAll().forEach(
+//                UsersResponseDTO::fromEntity
+//        );
+        return userRepository.findAll().stream()
+                .map(UsersResponseDTO::fromEntity)
+                .toList();
     }
 
-    public Users findOneUser(UUID id) {
+    public UsersResponseDTO findOneUser(UUID id) {
         Optional<Users> findedUser = userRepository.findById(id);
         if (findedUser.isPresent()) {
-            return findedUser.get();
+            return UsersResponseDTO.fromEntity(findedUser.get());
         } else {
             throw new RuntimeException("Usuário não encontrado!");
         }
     }
 
-    public Users addUser(UsersRequestDTO usersRequestDTO){
-        return userRepository.save(usersRequestDTO.toEntity());
+    public UsersResponseDTO addUser(UsersRequestDTO usersRequestDTO){
+        return UsersResponseDTO.fromEntity(userRepository.save(usersRequestDTO.toEntity()));
     }
 
 
