@@ -32,13 +32,6 @@ public class Users {
     private UUID id;
 
     @NotEmpty
-    @NotBlank(message = "Senha é obrigatório!")
-    @Size(min = 2, max = 8, message = "Senha deve ter entre 2 e 8 caracteres")
-    @Column(name = "senha", nullable = false, length = 8)
-    private String senha;
-
-
-    @NotEmpty
     @NotBlank(message = "Nome é obrigatório!")
     @Size(min = 2, max = 150, message = "Nome deve ter entre 2 e 150 caracteres")
     @Column(name = "name", nullable = false, length = 150)
@@ -54,6 +47,12 @@ public class Users {
     @Size(min = 10, max = 255, message = "E-mail deve ter entre 10 e 255 caracteres")
     @Column(name = "email", nullable = false, length = 255)
     private String email;
+
+    @NotEmpty
+    @NotBlank(message = "Senha é obrigatório!")
+    @Size(min = 2, max = 8, message = "Senha deve ter entre 2 e 8 caracteres")
+    @Column(name = "senha", nullable = false, length = 8)
+    private String senha;
 
     @PrePersist
     @PreUpdate

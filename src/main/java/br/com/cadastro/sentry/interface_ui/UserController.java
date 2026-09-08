@@ -7,9 +7,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 //import java.util.ArrayList;
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,38 +20,43 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UsersService usersService;
+    private final
+    UsersService usersService;
 
 
     //GET PARA RETORNAR TODOS OS USUÁRIOS
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<UsersResponseDTO> findAllUsers() {
-        return usersService.findAll();
+    public ResponseEntity<List<UsersResponseDTO>> findAllUsers() {
+        return ResponseEntity.ok(usersService.findAll());
     }
 
     //GET PARA RETORNAR APENAS UM USUÁRIO
     @GetMapping("/{id}")
-    public UsersResponseDTO findOneUser(@PathVariable UUID id) {
-       return usersService.findOneUser(id);
+    public ResponseEntity<UsersResponseDTO> findOneUser(@PathVariable UUID id) {
+       return ResponseEntity.ok(usersService.findOneUser(id));
     }
 
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UsersResponseDTO addUser(@Valid @RequestBody UsersRequestDTO usersRequestDTO) {
-        return usersService.addUser(usersRequestDTO);
+    public ResponseEntity<UsersResponseDTO> addUser(@Valid @RequestBody UsersRequestDTO usersRequestDTO) {
+        UsersResponseDTO userSaved = usersService.addUser(usersRequestDTO);
+        return ResponseEntity.created(
+                URI.create("/v1/users/" + userSaved.id())
+        ).body(userSaved);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UsersResponseDTO updateUser(@PathVariable UUID id, @RequestBody UsersRequestDTO usersRequestDTO) {
-       return usersService.updateUser(usersRequestDTO, id);
+    public ResponseEntity<UsersResponseDTO> updateUser(@PathVariable UUID id, @RequestBody UsersRequestDTO usersRequestDTO) {
+       return ResponseEntity.ok(usersService.updateUser(usersRequestDTO, id));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable UUID id) {
-       usersService.delete(id);
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
+        usersService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
