@@ -5,7 +5,6 @@ import br.com.cadastro.sentry.application.dto.UsersResponseDTO;
 import br.com.cadastro.sentry.domain.entity.Users;
 import br.com.cadastro.sentry.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,23 +35,40 @@ public class UsersService {
         }
     }
 
-    public UsersResponseDTO addUser(UsersRequestDTO usersRequestDTO){
+    public UsersResponseDTO addUser(UsersRequestDTO usersRequestDTO) {
         return UsersResponseDTO.fromEntity(userRepository.save(usersRequestDTO.toEntity()));
     }
 
 
-    public Users updateUser(UsersRequestDTO usersRequestDTO, UUID id) {
-        Users existingUser = findOneUser(id);
+    public UsersResponseDTO updateUser(UsersRequestDTO usersRequestDTO, UUID id) {
+//        Users existingUser = findOneUser(id);
+//        existingUser.setName(usersRequestDTO.name());
+//        existingUser.setCpf(usersRequestDTO.cpf());
+//        existingUser.setEmail(usersRequestDTO.email());
+//        existingUser.setSenha(usersRequestDTO.senha());
+
+        Users existingUser = userRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Usuário não encontrado!")
+        );
+
         existingUser.setName(usersRequestDTO.name());
         existingUser.setCpf(usersRequestDTO.cpf());
         existingUser.setEmail(usersRequestDTO.email());
         existingUser.setSenha(usersRequestDTO.senha());
 
-        return userRepository.save(existingUser);
+        return UsersResponseDTO.fromEntity(userRepository.save(existingUser));
     }
 
     public void delete(UUID id) {
-        userRepository.delete(findOneUser(id));
+//        Users existingUser = userRepository.findById(id).orElseThrow(
+//                () -> new RuntimeException("Usuário não encontrado!")
+//        );
+//        userRepository.delete(existingUser);
+        if (userRepository.existsById(id))
+            userRepository.deleteById(id);
+        else
+            throw new RuntimeException("Usuário não encontrado");
+
     }
 
 }

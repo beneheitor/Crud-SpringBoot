@@ -3,7 +3,6 @@ package br.com.cadastro.sentry.interface_ui;
 import br.com.cadastro.sentry.application.dto.UsersRequestDTO;
 import br.com.cadastro.sentry.application.dto.UsersResponseDTO;
 import br.com.cadastro.sentry.application.service.UsersService;
-import br.com.cadastro.sentry.domain.entity.Users;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +43,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Users updateUser(@PathVariable UUID id, @RequestBody UsersRequestDTO usersRequestDTO) {
+    public UsersResponseDTO updateUser(@PathVariable UUID id, @RequestBody UsersRequestDTO usersRequestDTO) {
        return usersService.updateUser(usersRequestDTO, id);
     }
 
